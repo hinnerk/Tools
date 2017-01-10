@@ -151,7 +151,7 @@ def convert(data):
     return converter(data)
 
 
-def _write_result(result, result_file):
+def write_result(result, result_file):
     writer = csv.writer(result_file, delimiter=',')
     # , quotechar='|', quoting=csv.QUOTE_MINIMAL)
     for row in result:
@@ -164,7 +164,7 @@ def convert_unicode(data):
     return data.decode('utf-8')
 
 
-if __name__ == '__main__':
+def cmdline():
     source = sys.argv[1]
     target = source[:-4] if source.lower().endswith('.csv') else source
     target += '-ynab.csv'
@@ -175,7 +175,7 @@ if __name__ == '__main__':
         converted_data = convert(raw_data)
         if not os.path.isfile(target):
             with open(target, 'w', newline='') as result_file:
-                _write_result(converted_data, result_file)
+                write_result(converted_data, result_file)
         else:
             print('File "{}" exists, exiting w/o doing anything.'.format(target))
             sys.exit(23)
@@ -187,3 +187,13 @@ if __name__ == '__main__':
         sys.exit(110)
     else:
         sys.exit(0)
+
+def ios_clip():
+    # TODO: does not work because implicit unicode conversions    
+    raw_data = clipboard.get()
+    data = convert_unicode(raw_data).strip()
+    clipboard.set(convert(data))
+    
+    
+if __name__ == '__main__':
+    cmdline()
