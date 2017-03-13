@@ -1,0 +1,4 @@
+Nummer;Buchungsdatum;Valutadatum;Waehrung;Betrag;Empfaengername;IBAN;BIC;Gläubiger ID;Mandatsreferenz;Absender ID;SEPA-Referenz;Bankleitzahl;Kontonummer;Referenz;Textschluessel;Kategorie;Kommentar;Verwendungszweck_1;Verwendungszweck_2;Verwendungszweck_3;Verwendungszweck_4;Verwendungszweck_5;Verwendungszweck_6;Verwendungszweck_7;Verwendungszweck_8;Verwendungszweck_9;Verwendungszweck_10;Verwendungszweck_11;Verwendungszweck_12;Verwendungszweck_13;Verwendungszweck_14
+1;02.05.2016;02.05.2016;EUR;"1234,56";Sender mit Ümläut +- Sønderzeichen;DE12345678901234567890;BICBICBICBI;;;;;;;SEPA Gutschrift;166/000;;;Kømmentar des Senders
+2;29.04.2016;01.05.2016;EUR;"-100,00";;;;;;;;;;Aktion ohne Aktor;806/000;;;
+9;03.05.2016;04.05.2016;EUR;"-1.40";;;;;;;;;;Belastung;;;;Gringold Services Inc. ;gringold.muggle  USA ;VK-Betrag: 1.62 USD ;Kurs: 1.1611003 ;Auslandseinsatzentgelt Faktor: 1.75% ;Auslandseinsatzentgelt Wert: 0.02

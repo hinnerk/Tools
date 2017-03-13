@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.5
+#!/usr/bin/env python3.6
 # coding=utf-8
 
 """
@@ -92,7 +92,7 @@ def _get_multi(data, keys):
     return ' '.join(x.strip() for x in results if x)
 
 
-def outbank_detect(data):
+def outbank_de_detect(data):
     test_line = (u"Nummer;Buchungsdatum;Valutadatum;Waehrung;Betrag"
                  u";Empfaengername;IBAN;BIC;Gläubiger ID;Mandatsreferenz;"
                  u"Absender ID;SEPA-Referenz;Bankleitzahl;Kontonummer;"
@@ -106,7 +106,10 @@ def outbank_detect(data):
     return data.split('\n')[0] == test_line
 
 
-def outbank_convert(data):
+outbank_3_format = "#;Konto;Datum;Valuta;Betrag;Währung;Name;Nummer;Bank;Zweck;Tags;Notiz;Rechnung;Kaufdatum;Abweichender Zahlungsempfänger;Originalbetrag;Provision;Wechselkurs;Buchungsschlüssel;Buchungstext;Art der Zahlung;SEPA Referenz;Kundenreferenz;Mandatsreferenz;Gläubiger ID"
+
+
+def outbank_de_convert(data):
     result = [['Date', 'Payee', 'Category', 'Memo', 'Outflow', 'Inflow']]
     data = csv.DictReader(data.split('\n'), delimiter=';')
     for row in data:
@@ -134,7 +137,7 @@ def outbank_convert(data):
 # TODO: more converters
 # TODO: add M&M converter
 DETECTORS = [
-    [outbank_detect, outbank_convert]
+    [outbank_de_detect, outbank_de_convert]
 ]
 
 
@@ -164,12 +167,13 @@ def convert_unicode(data):
     return data.decode('utf-8')
 
 
-def cmdline():
-    source = sys.argv[1]
-    target = source[:-4] if source.lower().endswith('.csv') else source
+def cmdline(file_name=None):
+    if not file_name:
+        file_name = sys.argv[1]
+    target = file_name[:-4] if file_name.lower().endswith('.csv') else file_name
     target += '-ynab.csv'
     try:
-        raw_data = open(source, 'rb').read()
+        raw_data = open(file_name, 'rb').read()
         raw_data = convert_unicode(raw_data)
         raw_data = raw_data.strip()
         converted_data = convert(raw_data)
@@ -180,7 +184,7 @@ def cmdline():
             print('File "{}" exists, exiting w/o doing anything.'.format(target))
             sys.exit(23)
     except FileNotFoundError:
-        print('No such file: "{}"'.format(source))
+        print('No such file: "{}"'.format(file_name))
         sys.exit(42)
     except ConverterNotFound:
         print('File type detection failed :(')
@@ -188,12 +192,13 @@ def cmdline():
     else:
         sys.exit(0)
 
+
 def ios_clip():
     # TODO: does not work because implicit unicode conversions    
     raw_data = clipboard.get()
     data = convert_unicode(raw_data).strip()
     clipboard.set(convert(data))
-    
-    
+
+
 if __name__ == '__main__':
     cmdline()
